@@ -1,14 +1,11 @@
 dl.hidebox {
 	background-color: #FFFFFF;
-	border-color: #C9D2D8;
 	padding: 3px;
-	background-color: #FFFFFF;
 	border: 1px solid #d8d8d8;
 	font-size: 1em;
 }
 
 dl.hidebox > dt {
-	border-bottom-color:  #CCCCCC;
 	text-transform: uppercase;
 	border-bottom: 1px solid #CCCCCC;
 	margin-bottom: 3px;
