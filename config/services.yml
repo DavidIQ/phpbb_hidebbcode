@@ -2,10 +2,10 @@ services:
     marcovo.hideBBcode.listener:
         class: marcovo\hideBBcode\event\listener
         arguments:
-            - @dbal.conn
-            - @user
-            - @template
-            - @config
-            - @controller.helper
+            - '@dbal.conn'
+            - '@user'
+            - '@template'
+            - '@config'
+            - '@controller.helper'
         tags:
             - { name: event.listener }
