@@ -32,6 +32,10 @@ class listener implements EventSubscriberInterface
     protected $helper;
     /** @var \phpbb\language\language */
     protected $lang;
+    /** @var string */
+    protected $phpbb_root_path;
+    /** @var string */
+    protected $php_ext;
 
     protected $b_forceUnhide = false;
     private $a_TFP_topic_posts_thanked = array();
@@ -43,10 +47,16 @@ class listener implements EventSubscriberInterface
     /**
      * Constructor
      *
-     * @param \phpbb\db\driver\driver $db Database object
+     * @param \phpbb\db\driver\driver_interface $db Database object
+     * @param \phpbb\user $user
+     * @param \phpbb\template\template $template
+     * @param \phpbb\config\config $config
      * @param \phpbb\controller\helper $helper Controller helper object
+     * @param \phpbb\language\language $lang
+     * @param string $phpbb_root_path
+     * @param string $php_ext
      */
-    public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\user $user, \phpbb\template\template $template, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\language\language $lang)
+    public function __construct(\phpbb\db\driver\driver_interface $db, \phpbb\user $user, \phpbb\template\template $template, \phpbb\config\config $config, \phpbb\controller\helper $helper, \phpbb\language\language $lang, string $phpbb_root_path, string $php_ext)
     {
         $this->db = $db;
         $this->user = $user;
@@ -54,6 +64,8 @@ class listener implements EventSubscriberInterface
         $this->config = $config;
         $this->helper = $helper;
         $this->lang = $lang;
+        $this->phpbb_root_path = $phpbb_root_path;
+        $this->php_ext = $php_ext;
 
         $this->hbuid = substr(md5(mt_rand()), 0, 10);
     }
@@ -530,6 +542,11 @@ class listener implements EventSubscriberInterface
     {
         $this->template->set_style(array('styles', 'ext/marcovo/hideBBcode/styles'));
 
+        if (!class_exists('\bbcode'))
+        {
+            require($this->phpbb_root_path . 'includes/bbcode.' . $this->php_ext);
+        }
+
         $bbcode = new \bbcode();
         $bbcode->template_filename = $this->template->get_source_file_for_handle('hide_bbcode.html');
 
@@ -555,6 +572,11 @@ class listener implements EventSubscriberInterface
     protected function hidden_pass_topicPreview($matches)
     {
         $this->template->set_style(array('styles', 'ext/marcovo/hideBBcode/styles'));
+
+        if (!class_exists('\bbcode'))
+        {
+            require($this->phpbb_root_path . 'includes/bbcode.' . $this->php_ext);
+        }
 
         $bbcode = new \bbcode();
         $bbcode->template_filename = $this->template->get_source_file_for_handle('hide_bbcode.html');
